@@ -17,7 +17,8 @@
                   </div>
                 </v-card-title>
                 <v-card-actions>
-                  <v-btn flat color="indigo">
+                  <v-spacer></v-spacer>
+                  <v-btn flat color="indigo" to="meetup/1">
                     Check it now
                     <v-icon right>arrow_forward</v-icon>
                   </v-btn>
