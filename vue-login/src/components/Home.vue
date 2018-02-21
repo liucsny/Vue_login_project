@@ -20,13 +20,9 @@
 
 <script>
 export default {
-  data(){
-    return {
-      meetups:[
-        { src:"https://youimg1.c-ctrip.com/target/fd/tg/g1/M01/26/B8/CghzflUeq1eAK3QXAASvzqpLIQg748.jpg", id:"1", title:"" },
-        { src:"https://upload.wikimedia.org/wikipedia/commons/8/87/Fudan-building3.jpg", id:"2", title:"" },
-        { src:"http://pic.guojj.com/weixin_news_img/2017-12-11/5a2de4a76104b2192.jpg", id:"3", title:"" },
-      ]
+  computed:{
+    meetups: function(){
+      return this.$store.getters.loadedMeetups;
     }
   },
   methods: {

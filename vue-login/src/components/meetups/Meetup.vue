@@ -3,12 +3,12 @@
     <v-layout row wrap>
       <v-flex xs12>
         <v-card>
-          <v-card-media src="https://youimg1.c-ctrip.com/target/fd/tg/g1/M01/26/B8/CghzflUeq1eAK3QXAASvzqpLIQg748.jpg" height="500px" >
+          <v-card-media :src="meetup.src" height="500px" >
           </v-card-media>
           <v-card-title>
             <div>
-              <div class="headline">My Meetup</div>
-              <div>July 31th 2018</div>
+              <div class="headline">{{meetup.title}}</div>
+              <div>{{meetup.date}}</div>
             </div>
           </v-card-title>
           <v-card-text>
@@ -26,6 +26,11 @@
 
 <script>
 export default {
+  computed:{
+    meetup:function(){
+      return this.$store.getters.loadedMeetup(this.$route.params.id)
+    }
+  }
 }
 </script>
 
