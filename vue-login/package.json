@@ -10,8 +10,11 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "ajv-keywords": "^3.1.0",
     "material-design-icons": "^3.0.1",
+    "node-gyp": "^3.6.2",
     "vue": "^2.5.2",
+    "vue-firebase": "^1.0.8",
     "vue-router": "^3.0.1",
     "vuetify": "^1.0.1",
     "vuex": "^3.0.1"

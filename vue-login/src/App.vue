@@ -37,15 +37,28 @@ export default {
   data:function(){
     return {
       drawer:false,
-      menuItems:[
-        { icon: "home", title: "Home", link: "/" },
-        { icon: "supervisor_accounts", title: "View Meetups", link: "/meetups" },
-        { icon: "room", title: "Organize Meetups", link: "/meetup/new" },
-        { icon: "person", title: "Profile", link: "/profile" },
-        { icon: "face", title: "Sign Up", link: "/signup" },
-        { icon: "lock_open", title: "Sign In", link: "/signin" },
-      ]
     }
+  },
+  computed: {
+    menuItems(){
+      if(this.$store.getters.getUser !== null && this.$store.getters.getUser !== undefined){
+        return [
+          { icon: "home", title: "Home", link: "/" },
+          { icon: "supervisor_accounts", title: "View Meetups", link: "/meetups" },
+          { icon: "room", title: "Organize Meetups", link: "/meetup/new" },
+          { icon: "person", title: "Profile", link: "/profile" },
+        ]
+      }else{
+        return [
+          { icon: "home", title: "Home", link: "/" },
+          { icon: "supervisor_accounts", title: "View Meetups", link: "/meetups" },
+          { icon: "room", title: "Organize Meetups", link: "/meetup/new" },
+          { icon: "face", title: "Sign Up", link: "/signup" },
+          { icon: "lock_open", title: "Sign In", link: "/signin" }
+        ]
+      }
+    },
+
   },
   name: 'App'
 }

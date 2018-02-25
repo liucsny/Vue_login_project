@@ -6,13 +6,12 @@ import router from './router'
 import Vuetify from 'vuetify'
 import "vuetify/dist/vuetify.min.css"
 import 'material-design-icons/iconfont/material-icons.css'//use material icons locally
-
 import { store } from './store'
-
 
 Vue.use(Vuetify)
 
 Vue.config.productionTip = false
+
 
 /* eslint-disable no-new */
 new Vue({
@@ -20,5 +19,14 @@ new Vue({
   router,
   store,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  created(){
+    firebase.initializeApp({
+      apiKey: "AIzaSyBsaJ2Y-1t2iI1r4R8Y15ytGGTZMM0NIW8",
+      authDomain: "vue-login-41ccf.firebaseapp.com",
+      databaseURL: "https://vue-login-41ccf.firebaseio.com",
+      projectId: "vue-login-41ccf",
+      storageBucket: "vue-login-41ccf.appspot.com",
+    })
+  }
 })
