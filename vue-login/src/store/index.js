@@ -5,37 +5,15 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state:{
-    Meetups: [
-      {
-        src:"https://youimg1.c-ctrip.com/target/fd/tg/g1/M01/26/B8/CghzflUeq1eAK3QXAASvzqpLIQg748.jpg",
-        id:"1",
-        title:"Tongji University",
-        meetupDate:"2017-01-23",
-        location:"Shanghai",
-        description:"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-      },
-      {
-        src:"https://upload.wikimedia.org/wikipedia/commons/8/87/Fudan-building3.jpg",
-        id:"2",
-        title:"Fudan University",
-        meetupDate:"2017-04-13",
-        location:"Shanghai",
-        description:"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-      },
-      {
-        src:"http://pic.guojj.com/weixin_news_img/2017-12-11/5a2de4a76104b2192.jpg",
-        id:"3",
-        title:"Shen Zhen",
-        meetupDate:"2017-07-31",
-        location:"Shenzhen",
-        description:"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-      },
-    ],
+    Meetups: [],
     user: null,
     loading: false,
     error: null
   },
   mutations: {
+    setLoadedMeetups(state, payload){
+      state.Meetups = payload;
+    },
     createMeetup(state, payload){
       state.Meetups.push(payload);
     },
@@ -53,6 +31,33 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
+    loadMeetups({commit}){
+      commit("setLoading",true);
+
+      firebase.database().ref("meetupNames").once("value")
+        .then(function(data){
+          const meetups = [];
+          console.log(data);
+          const obj = data.val();
+          console.log(obj);
+          for(let index in obj){
+            meetups.push({
+              id: index,
+              title: obj[index].title,
+              description: obj[index].description,
+              location: obj[index].location,
+              meetupDate: obj[index].meetupDate,
+              src: obj[index].src,
+            })
+          }
+          commit("setLoading",false);
+          commit("setLoadedMeetups",meetups);
+        })
+        .catch(function(error){
+          console.log(error);
+          commit("setLoading",true);          
+        })
+    },
     createMeetup({commit}, payload){
       const meetup = {
         src: payload.src,
@@ -61,10 +66,11 @@ export const store = new Vuex.Store({
         description: payload.description,
         meetupDate: payload.meetupDate
       }
-
-      firebase.database().ref("meetups").push(meetup)
+      // console.log("created! ",meetup)
+      firebase.database().ref("meetupNames").push(meetup)
         .then(function(data){
           console.log(data)
+          const key = data.key
           commit("createMeetup", meetup)
         })
         .catch(function(error){

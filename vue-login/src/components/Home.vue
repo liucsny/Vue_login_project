@@ -1,7 +1,12 @@
 <template lang="html">
   <div>
     <v-container>
-      <v-layout class="mb-4">
+      <v-layout v-if="loading" class="mb-4">
+        <v-flex> 
+          <v-progress-circular indeterminate color="primary"></v-progress-circular>
+        </v-flex>
+      </v-layout>
+      <v-layout v-if="!loading" class="mb-4">
         <v-carousel hide-controls>
           <v-carousel-item v-for="(item,i) in meetups" :src="item.src" :key="i" @click.native="onLoadMeetup(item.id)" style="cursor:pointer"></v-carousel-item>
         </v-carousel>
@@ -21,12 +26,15 @@
 <script>
 export default {
   computed:{
-    meetups: function(){
+    meetups(){
       return this.$store.getters.loadedMeetups;
+    },
+    loading(){
+      return this.$store.getters.loading;
     }
   },
   methods: {
-    onLoadMeetup: function(id){
+    onLoadMeetup(id){
       // console.log(12);
       this.$router.push("/meetup/" + id)
     }

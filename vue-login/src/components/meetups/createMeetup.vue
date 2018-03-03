@@ -87,7 +87,7 @@ export default {
         meetupDate: this.meetupDate,
       }
 
-      console.log(meetupData);
+      // console.log(meetupData);
       this.$store.dispatch("createMeetup", meetupData);
       this.$router.push("/meetups");
     }

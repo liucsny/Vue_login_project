@@ -29,5 +29,7 @@ new Vue({
       projectId: "vue-login-41ccf",
       storageBucket: "vue-login-41ccf.appspot.com",
     })
+
+    this.$store.dispatch("loadMeetups")
   }
 })
