@@ -1,5 +1,10 @@
 <template lang="html">
   <v-container>
+    <v-layout row v-if="error">
+      <v-flex xs12 sm6 offset-sm3>
+        <app-alert @dismissed="onDismissed" :text="error.message"></app-alert>
+      </v-flex>
+    </v-layout>
     <v-layout row>
       <v-flex xs12 sm6 offset-sm3>
         <v-card>
@@ -11,7 +16,7 @@
                     <div class="headline">Sign In</div>
                     <v-text-field color="indigo" name="Email" label="E-mail" id="email" v-model="email" type="email" required></v-text-field>
                     <v-text-field color="indigo" name="password" label="Password" id="password" v-model="password" type="password" required></v-text-field>
-                    <v-btn type="submit" color="indigo" dark>Sign In</v-btn>
+                    <v-btn :loading="loading" :disabled="loading" :dark="!loading" type="submit" color="indigo">Sign In</v-btn>
                   </v-flex>
                 </v-layout>
               </form>
@@ -34,7 +39,13 @@ export default {
   },
   computed:{
     user(){
-      return this.$store.getters.getUser
+      return this.$store.getters.getUser;
+    },
+    error(){
+      return this.$store.getters.error;
+    },
+    loading(){
+      return this.$store.getters.loading;
     }
   },
   methods:{
@@ -44,6 +55,10 @@ export default {
         password: this.password,
       })
       // console.log(this.email,"+", this.password,"+", this.confirmPassword);
+    },
+    onDismissed(){
+      console.log("dismissed!")
+      this.$store.commit("clearError")
     }
   },
   watch:{

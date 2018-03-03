@@ -7,11 +7,12 @@ import Vuetify from 'vuetify'
 import "vuetify/dist/vuetify.min.css"
 import 'material-design-icons/iconfont/material-icons.css'//use material icons locally
 import { store } from './store'
+import alertComponents from './components/shared/Alert.vue'
 
 Vue.use(Vuetify)
 
 Vue.config.productionTip = false
-
+Vue.component("app-alert", alertComponents);
 
 /* eslint-disable no-new */
 new Vue({
