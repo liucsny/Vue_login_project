@@ -27,7 +27,7 @@ new Vue({
       authDomain: "vue-login-41ccf.firebaseapp.com",
       databaseURL: "https://vue-login-41ccf.firebaseio.com",
       projectId: "vue-login-41ccf",
-      storageBucket: "vue-login-41ccf.appspot.com",
+      storageBucket: "gs://vue-login-41ccf.appspot.com",
       messagingSenderId: "763501597626"
     })
 

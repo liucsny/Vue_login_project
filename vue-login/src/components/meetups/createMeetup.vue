@@ -10,7 +10,11 @@
         <v-flex xs12 sm8 offset-sm2>
           <v-text-field v-model="title" color="indigo" name="title" id="title" label="Title" required></v-text-field>
           <v-text-field v-model="location" color="indigo" name="location" id="location" label="Location" required></v-text-field>
-          <v-text-field v-model="src" color="indigo" name="ImageURL" id="ImageURL" label="ImageURL" required></v-text-field>
+          <v-btn rasied color="indigo" @click="onPickFile" dark>Choose a image</v-btn>
+          <div>
+            <input type="file" style="display:none" ref="fileInput" accept="image/*" @change="onFilePicked">
+          </div>
+          <img width="300px" :src="src" mt-6 mb-2></img>          
           <v-text-field v-model="description" color="indigo" name="description" id="description" label="Description" required multi-line></v-text-field>
         </v-flex>
       </v-layout>
@@ -51,7 +55,7 @@ export default {
       publishDate: "",
       meetupDate: "",
       meetupTime: new Date(),
-      id: Math.random()*100,
+      image: null,
     }
   },
   computed: {
@@ -62,7 +66,6 @@ export default {
       let date = new Date(this.meetupDate);
       date.setHours(this.meetupTime.getHours());
       date.setMinutes(this.meetupTime.getMinutes());
-      console.log(date);
       return date;
     }
   },
@@ -78,11 +81,10 @@ export default {
     },
     onCreateMeetup: function(){
       const meetupData = {
-        id: this.id,
         title: this.title,
         location: this.location,
         description: this.description,
-        src: this.src,
+        image: this.image,
         publishDate: new Date(),
         meetupDate: this.meetupDate,
       }
@@ -90,6 +92,22 @@ export default {
       // console.log(meetupData);
       this.$store.dispatch("createMeetup", meetupData);
       this.$router.push("/meetups");
+    },
+    onPickFile(){
+      this.$refs.fileInput.click();
+    },
+    onFilePicked(event){
+      const files = event.target.files;
+      let fileName = files[0].name;
+      if(fileName.lastIndexOf('.')<=0){
+        return alert("Invalid file.")
+      }
+      const fileReader = new FileReader();
+      fileReader.addEventListener("load",()=>{
+        this.src = fileReader.result       
+      })
+      fileReader.readAsDataURL(files[0]);
+      this.image = files[0]
     }
   }
 }

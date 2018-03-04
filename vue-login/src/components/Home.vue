@@ -2,7 +2,7 @@
   <div>
     <v-container>
       <v-layout v-if="loading" class="mb-4">
-        <v-flex> 
+        <v-flex class="text-xs-center"> 
           <v-progress-circular indeterminate color="primary"></v-progress-circular>
         </v-flex>
       </v-layout>

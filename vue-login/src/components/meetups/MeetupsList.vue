@@ -1,5 +1,10 @@
 <template lang="html">
   <v-container>
+    <v-layout v-if="loading" row wrap class="mb-3">
+      <v-flex class="text-xs-center">
+        <v-progress-circular indeterminate color="indigo"></v-progress-circular>
+      </v-flex>
+    </v-layout>
     <v-layout row wrap v-for="(item, i) in meetupsList" :key="i" class="mb-3">
       <v-flex xs12>
         <v-card>
@@ -35,8 +40,10 @@
 <script>
 export default {
   computed:{
+    loading(){
+      return this.$store.getters.loading;
+    },
     meetupsList:function(){
-      console.log(this.$store.getters.loadedMeetups);
       return this.$store.getters.loadedMeetups
     }
   },

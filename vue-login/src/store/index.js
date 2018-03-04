@@ -10,6 +10,32 @@ export const store = new Vuex.Store({
     loading: false,
     error: null
   },
+  getters: {
+    featuredMeetups: function(state, getters){
+      return getters.loadedMeetups.slice(0,5);
+    },
+    loadedMeetups: function(state){
+      return state.Meetups.sort((meetupA,meetupB)=>{
+        return meetupA.date > meetupB.date;
+      })
+    },
+    loadedMeetup: function(state){
+      return (meetupId)=>{
+        return state.Meetups.find((meetup)=>{
+          return meetup.id == meetupId;
+        })
+      }
+    },
+    getUser(state){
+      return state.user
+    },
+    error(state){
+      return state.error
+    },
+    loading(state){
+      return state.loading
+    }
+  },
   mutations: {
     setLoadedMeetups(state, payload){
       state.Meetups = payload;
@@ -38,7 +64,6 @@ export const store = new Vuex.Store({
         .then(function(data){
           const meetups = [];
           const obj = data.val();
-          console.log("obj",obj);
           for(let index in obj){
             meetups.push({
               id: index,
@@ -60,7 +85,7 @@ export const store = new Vuex.Store({
     },
     createMeetup({commit, getters}, payload){
       const meetup = {
-        src: payload.src,
+        // src: payload.src,
         title: payload.title,
         location: payload.location,
         description: payload.description,
@@ -68,9 +93,25 @@ export const store = new Vuex.Store({
         creatorId: getters.getUser.id,
       }
       // console.log("created! ",meetup)
+      let id;
       firebase.database().ref("meetupNames").push(meetup)
         .then(function(data){
-          meetup.id = data.key;
+          id = data.key;
+          return data.key;
+        })
+        .then(function(id) {
+          const filename = payload.image.name;
+          const extention = filename.slice(filename.lastIndexOf("."));
+          
+          return firebase.storage().ref("meetupNames/" + id + "." + extention).put(payload.image)
+        })
+        .then(function(fileData){
+          const imgURL = fileData.metadata.downloadURLs[0];
+          meetup.src = imgURL;          
+          return firebase.database().ref("meetupNames").child(id).update({ src: imgURL })
+        })
+        .then(function(){
+          meetup.id = id;
           commit("createMeetup", meetup)
         })
         .catch(function(error){
@@ -123,31 +164,5 @@ export const store = new Vuex.Store({
       firebase.auth().signOut();
       commit("setUser",null);
     },
-  },
-  getters: {
-    featuredMeetups: function(state, getters){
-      return getters.loadedMeetups.slice(0,5);
-    },
-    loadedMeetups: function(state){
-      return state.Meetups.sort((meetupA,meetupB)=>{
-        return meetupA.date > meetupB.date;
-      })
-    },
-    loadedMeetup: function(state){
-      return (meetupId)=>{
-        return state.Meetups.find((meetup)=>{
-          return meetup.id == meetupId;
-        })
-      }
-    },
-    getUser(state){
-      return state.user
-    },
-    error(state){
-      return state.error
-    },
-    loading(state){
-      return state.loading
-    }
   },
 })
