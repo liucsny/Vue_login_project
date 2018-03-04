@@ -5,7 +5,7 @@
         <v-btn @click="drawer=!drawer" flat icon color="grey darken-3">
           <v-icon>keyboard_arrow_left</v-icon>
         </v-btn>
-        <v-list-tile @click="" v-for="item in menuItems" :key="item.title" :to="item.link">
+        <v-list-tile v-for="item in menuItems" :key="item.title" :to="item.link">
           <v-list-tile-action>
             <v-icon>{{item.icon}}</v-icon>
           </v-list-tile-action>
@@ -52,7 +52,6 @@ export default {
         return [
           { icon: "home", title: "Home", link: "/" },
           { icon: "supervisor_accounts", title: "View Meetups", link: "/meetups" },
-          { icon: "room", title: "Organize Meetups", link: "/meetup/new" },
           { icon: "face", title: "Sign Up", link: "/signup" },
           { icon: "lock_open", title: "Sign In", link: "/signin" }
         ]

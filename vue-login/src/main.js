@@ -28,6 +28,13 @@ new Vue({
       databaseURL: "https://vue-login-41ccf.firebaseio.com",
       projectId: "vue-login-41ccf",
       storageBucket: "vue-login-41ccf.appspot.com",
+      messagingSenderId: "763501597626"
+    })
+
+    firebase.auth().onAuthStateChanged((user)=>{
+      if(user){
+        this.$store.dispatch("autoSignIn",user)
+      }
     })
 
     this.$store.dispatch("loadMeetups")
