@@ -5,6 +5,9 @@
         <v-card>
           <v-card-media :src="meetup.src" height="500px" >
           </v-card-media>
+          <template v-if="true">
+            <app-edit-dialog></app-edit-dialog>
+          </template>
           <v-card-title>
             <div>
               <div class="headline">{{meetup.title}}</div>
@@ -30,7 +33,10 @@ export default {
   computed:{
     meetup:function(){
       return this.$store.getters.loadedMeetup(this.id)
-    }
+    },
+    userIsAuthenticated(){
+      return this.$store.getters.getUser !== null && this.$store.getters.getUser !== undefined;
+    },
   }
 }
 </script>

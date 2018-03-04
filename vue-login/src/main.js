@@ -8,11 +8,13 @@ import "vuetify/dist/vuetify.min.css"
 import 'material-design-icons/iconfont/material-icons.css'//use material icons locally
 import { store } from './store'
 import alertComponents from './components/shared/Alert.vue'
+import editMeetupDialog from "./components/meetups/edit/editMeetupDialog.vue"
 
 Vue.use(Vuetify)
 
 Vue.config.productionTip = false
 Vue.component("app-alert", alertComponents);
+Vue.component("app-edit-dialog", editMeetupDialog);
 
 /* eslint-disable no-new */
 new Vue({
