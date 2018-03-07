@@ -5,8 +5,8 @@
         <v-card>
           <v-card-media :src="meetup.src" height="500px" >
           </v-card-media>
-          <template v-if="true">
-            <app-edit-dialog></app-edit-dialog>
+          <template v-if="userIsCreator">
+            <app-edit-dialog :meetup="meetup"></app-edit-dialog>
           </template>
           <v-card-title>
             <div>
@@ -36,6 +36,14 @@ export default {
     },
     userIsAuthenticated(){
       return this.$store.getters.getUser !== null && this.$store.getters.getUser !== undefined;
+    },
+    userIsCreator(){
+      console.log(this.userIsAuthenticated)
+      if (!this.userIsAuthenticated) {
+        return false
+      }else{       
+        return this.$store.getters.getUser.id === this.meetup.creatorId;
+      }
     },
   }
 }
