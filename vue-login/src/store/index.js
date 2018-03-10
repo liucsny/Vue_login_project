@@ -54,12 +54,41 @@ export const store = new Vuex.Store({
     },
     clearError(state){
       state.error = null;
+    },
+    updateMeetup(state,payload){
+      const meetup = state.Meetups.find(meetup=>{
+        return meetup.id ===  payload.id;
+      })
+
+      if(payload.title){
+        meetup.title = payload.title
+      }
+      if(payload.description){
+        meetup.description = payload.description
+      }      
+      if(payload.date){
+        meetup.date = payload.date
+      }
     }
   },
   actions: {
+    updateMeetupData({commit},payload){
+      commit("setLoading",true);
+      const updateObj = {
+
+      };
+      firebase.database().ref("meetupNames").child(payload.id).update(updateObj)
+        .then(()=>{
+          commit("updateMeetup",payload)
+          commit("setLoading",false);
+        })
+        .catch(error=>{
+          commit("setLoading",false);
+          console.log(error)
+        })
+    },
     loadMeetups({commit}){
       commit("setLoading",true);
-
       firebase.database().ref("meetupNames").once("value")
         .then(function(data){
           const meetups = [];

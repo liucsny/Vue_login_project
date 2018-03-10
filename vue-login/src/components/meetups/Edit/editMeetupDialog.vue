@@ -10,8 +10,8 @@
                     <v-flex xs12>
                         <v-card-title class="headline">Edit Meetup</v-card-title>
                         <v-card-text>
-                            <v-text-field v-model="editTitle" color="indigo" name="title" id="title" label="Title" required></v-text-field>
-                            <v-text-field v-model="editDescription" color="indigo" name="description" id="description" label="Description" required multi-line></v-text-field>
+                            <v-text-field v-model="editedTitle" color="indigo" name="title" id="title" label="Title" required></v-text-field>
+                            <v-text-field v-model="editedDescription" color="indigo" name="description" id="description" label="Description" required multi-line></v-text-field>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
@@ -30,13 +30,24 @@ export default {
     props:["meetup"],
     data(){
         return {
-            editDialog: true,
-            editTitle: this.meetup.title,
-            editDescription: this.meetup.description,
+            editDialog: false,
+            editedTitle: this.meetup.title,
+            editedDescription: this.meetup.description,
         }
     },
     methods:{
         onSave(){
+            if (this.editedTitle.trim() === ""  || this.editedDescription.trim() === "") {
+                return
+            }
+
+            console.log(this.meetup)
+
+            this.$store.dispatch("updateMeetupData",{
+                title: this.editedTitle,
+                description: this.editedDescription,              
+                id: this.meetup.id,                
+            })
             this.editDialog = false
         }
     }
